@@ -4,12 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using CommanderLib;
+
 namespace CodingUtil
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
+            string eui = Commander.GetEUI();
+
+            Console.WriteLine(eui);
+
+            Console.Read();
+            return 0;
         }
     }
 }
