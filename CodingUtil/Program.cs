@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using CommanderLib;
+using Centralite.Database;
 
 namespace CodingUtil
 {
@@ -12,11 +13,26 @@ namespace CodingUtil
     {
         static int Main(string[] args)
         {
-            string eui = Commander.GetEUI();
+            try
+            {
+                long eui = Commander.GetEUI();
+                DatabaseUtils.InsertEUI(eui);
 
-            Console.WriteLine(eui);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + "\r\n" + ex.StackTrace);
 
+#if DEBUG
+                Console.Read();
+#endif
+
+                return -1;
+            }
+
+#if DEBUG
             Console.Read();
+#endif
             return 0;
         }
     }

@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{977D09FF-C0D1-439B-A635-2DBEC8DD3CD3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>CodingUtil</RootNamespace>
-    <AssemblyName>CodingUtil</AssemblyName>
+    <ProjectGuid>{83AD53B1-7D5A-4448-A061-9956EC677B4A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>databaseLib</RootNamespace>
+    <AssemblyName>databaseLib</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.0.0.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser20.2.0.0.0\lib\net40\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -52,32 +47,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="DatabaseUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\home-automation-tester\HomeAutomationTester\manufacturing_common\Centralite.Database\Centralite.Database.csproj">
       <Project>{a4b77291-3076-425b-9b0a-390de2249ffc}</Project>
       <Name>Centralite.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommanderLib\CommanderLib.csproj">
-      <Project>{4ddfa33e-7024-46a3-9542-5a0afa1cf03d}</Project>
-      <Name>CommanderLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\databaseLib\DatabaseLib.csproj">
-      <Project>{83ad53b1-7d5a-4448-a061-9956ec677b4a}</Project>
-      <Name>DatabaseLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StationSetupLib\StationSetupLib.csproj">
       <Project>{5c0f6e4e-ff68-44bf-8628-02b188e1bc8b}</Project>
       <Name>StationSetupLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
