@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CodingUtil
 {
-    [Verb("flash", HelpText = "use to code device")]
+    [Verb("code", HelpText = "use to code device")]
     class FlashOptions
     {
         [Option('f', "inputfiles", Required = true,
@@ -19,6 +19,12 @@ namespace CodingUtil
 
         [Option(Required = false, Default = false, HelpText = "Mass Erase")]
         public bool MassErase { get; set; }
+
+        [Option(Required = false, Default = true, HelpText = "DB Insert")]
+        public bool DBInsert { get; set; }
+
+        [Option(Required = false, Default = true, HelpText = "Range Test")]
+        public bool RangeTest { get; set; }
 
     }
 

@@ -15,7 +15,7 @@ namespace CodingUtil
     {
         static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void InsertEUI(long eui)
+        public static int InsertEUI(long eui)
         {
             try
             {
@@ -41,6 +41,10 @@ namespace CodingUtil
                             _logger.Error(msg);
                             throw new Exception(msg);
                         }
+                        else
+                        {
+                            return q.Single().Id;
+                        }
                     }
 
 
@@ -50,6 +54,9 @@ namespace CodingUtil
 
                     cx.EuiLists.Add(euiList);
                     cx.SaveChanges();
+
+                    return q.Single().Id;
+
                 }
             }
             catch (Exception ex)
@@ -73,6 +80,7 @@ namespace CodingUtil
                 }
             }
 
+            return -1;
         }
     }
 }

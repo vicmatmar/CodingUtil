@@ -11,8 +11,14 @@ namespace CodingUtil
 
         static int RunFlash(FlashOptions opts)
         {
+            _logger.Info("GetEUI");
             long eui = Commander.GetEUI();
-            //DatabaseUtils.InsertEUI(eui);
+            _logger.Info( $"EUI = {eui.ToString("X16")}");
+
+            _logger.Info("Insert EUI");
+            int euiid = DatabaseUtils.InsertEUI(eui);
+            _logger.Info($"EUI id = {euiid}");
+
             return 0;
         }
 
@@ -24,7 +30,7 @@ namespace CodingUtil
         static int Main(string[] args)
         {
             int rc = 0;
-
+            _logger.Info("Program started");
             try
             {
                 rc = Parser.Default.ParseArguments<FlashOptions, TestOptions>(args)
