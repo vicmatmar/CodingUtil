@@ -14,6 +14,8 @@ namespace CommanderLib
     /// </summary>
     public class Commander
     {
+        static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         static string[] _possible_paths = new string[]
         {
             @"C:\ Simplicity Commander",
@@ -57,6 +59,11 @@ namespace CommanderLib
             }
 
             return output;
+
+        }
+
+        public static void Flash(IEnumerable<string> files, string mfgstring, bool massErase = false)
+        {
 
         }
 
