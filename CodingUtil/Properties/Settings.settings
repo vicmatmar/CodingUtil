@@ -15,7 +15,7 @@
       <Value Profile="(Default)">-74</Value>
     </Setting>
     <Setting Name="PingCount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">50</Value>
     </Setting>
   </Settings>
 </SettingsFile>

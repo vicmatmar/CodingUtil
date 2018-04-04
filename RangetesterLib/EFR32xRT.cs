@@ -44,58 +44,30 @@ namespace RangeTester
             string response;
 
             // Init Client Connection
-            TcpClientHelper clinet_tcp = new TcpClientHelper();
-            clinet_tcp.Connect(Client_Host, Client_Port);
-
-            var clientStream = clinet_tcp.GetStream();
-            var clientReader = new StreamReader(clientStream);
-            var clientWriter = new StreamWriter(clientStream);
-
-            clientStream.ReadTimeout = 250;
-            clientWriter.AutoFlush = true;
+            TelnetConnection client = new TelnetConnection(Client_Host, Client_Port);
 
             // Start 
-            //clientWriter.WriteLine("custom stop_network_scan");
+            string lines;
+            client.WriteLine("custom stop_network_scan");
+            lines = client.Read();
+
             //clientWriter.WriteLine("plugin mfglib mfgenable 1");
-            clientWriter.WriteLine("plugin mfglib stop");
-            string[] lines;
+            client.WriteLine("plugin mfglib stop");
+            lines = client.Read();
+
+            var clientFilter = (UInt32)((new Random((int)DateTime.Now.Ticks).NextDouble()) * UInt32.MaxValue);
+            client.WriteLine($"custom rt-init {clientFilter} {Alt_Cfg}");  // Alt_Cfg does nothing for Highfin
+            lines = client.Read();
             int count = 0;
-            while (true)
-            {
-                try
-                {
-                    lines = clinet_tcp.ReadAllLines();
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    string m = ex.Message;
+            foreach (string line in lines.Split(new string[] { "\r\n" }, StringSplitOptions.None))
+                if (line == "STATUS 00")
                     count++;
-                    if (count > 100)
-                        break;
-                }
+            if (count != 2)
+                throw new Exception("Unable to init range test client");
 
-            }
 
-            while (true)
-            {
-                clientWriter.WriteLine("plugin mfglib mfgenable 1");
-                clientWriter.WriteLine("plugin mfglib stop");
-                var clientFilter = (UInt32)((new Random((int)DateTime.Now.Ticks).NextDouble()) * UInt32.MaxValue);
-                clientWriter.WriteLine("custom rt-init {0} {1}", clientFilter, Alt_Cfg);  // Alt_Cfg does nothing for Highfin
-                lines = clinet_tcp.ReadAllLines();
-                count = 0;
-                foreach (string line in lines)
-                    if (line == "STATUS 00")
-                        count++;
-
-                if (count == 2)
-                    break;
-
-            }
-
-            clientWriter.WriteLine("plugin mfglib set-channel {0}", Channel);
-            response = clientReader.ReadLine();
+            client.WriteLine($"plugin mfglib set-channel {Channel}");
+            response = client.Read();
             if (!response.Contains("status 0x00"))
             {
                 throw new Exception("Unable to set client channel");
@@ -107,9 +79,8 @@ namespace RangeTester
             if (Power != int.MaxValue)
             {
                 string cmd = "plugin mfglib set-power " + Power.ToString() + " 0";
-
-                clientWriter.WriteLine(cmd);
-                response = clientReader.ReadLine();
+                client.WriteLine(cmd);
+                response = client.Read();
                 if (!response.Contains("status 0x00"))
                 {
                     throw new Exception("Unable to set client power");
@@ -121,46 +92,41 @@ namespace RangeTester
             var rxLqi = new List<int>();
             var rxRssi = new List<int>();
 
-            int read_fail_count = 0;
-            for (var i = 0; i < ping_count;)
+            for (var i = 0; i < ping_count; i++)
             {
-                clientWriter.WriteLine("custom rt-ping");
-                //Thread.Sleep(25);
-                try
+                int retry = 0;
+                while (true)
                 {
-                    response = clientReader.ReadLine();
-                    read_fail_count = 0;
-                    i++;
-                }
-                catch
-                {
-                    // Reader timed out
-                    read_fail_count++;
-                    if (read_fail_count > 5)
-                        throw new Exception("Too many reader timeouts waiting for ping response");
+                    client.WriteLine("custom rt-ping");
+                    Thread.Sleep(50);
 
-                    continue;
-                }
+                    response = client.Read();
 
-                if (Regex.IsMatch(response, _PING_REGEX))
-                {
-                    var match = Regex.Match(response, _PING_REGEX);
+                    if (Regex.IsMatch(response, _PING_REGEX))
+                    {
+                        var match = Regex.Match(response, _PING_REGEX);
 
-                    txLqi.Add(int.Parse(match.Groups[2].Value));
-                    txRssi.Add(int.Parse(match.Groups[3].Value));
-                    rxLqi.Add(int.Parse(match.Groups[4].Value));
-                    rxRssi.Add(int.Parse(match.Groups[5].Value));
-                }
-                else
-                {
-                    throw new Exception("Invalid Ping Response: " + response);
+                        txLqi.Add(int.Parse(match.Groups[2].Value));
+                        txRssi.Add(int.Parse(match.Groups[3].Value));
+                        rxLqi.Add(int.Parse(match.Groups[4].Value));
+                        rxRssi.Add(int.Parse(match.Groups[5].Value));
+
+                        break;
+                    }
+                    else
+                    {
+                        retry++;
+                        if(retry > 3)
+                            throw new Exception("Invalid Ping Response: " + response);
+                    }
+
                 }
             }
 
-            clientWriter.WriteLine("plugin mfglib stop");
-            clientWriter.WriteLine("plugin mfglib mfgenable 0");
+            client.WriteLine("plugin mfglib stop");
+            client.WriteLine("plugin mfglib mfgenable 0");
 
-            clinet_tcp.Close();
+            client.Close();
 
             RtPingResults results = new RtPingResults(txLqi.Average(), txRssi.Average(), rxLqi.Average(), rxRssi.Average());
             return results;

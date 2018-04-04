@@ -44,7 +44,7 @@
     <Compile Include="IRangeTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RtPingResults.cs" />
-    <Compile Include="TcpClientHelper.cs" />
+    <Compile Include="TelnetInterface.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
