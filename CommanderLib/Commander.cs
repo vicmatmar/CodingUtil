@@ -38,6 +38,12 @@ namespace CommanderLib
         static string _device = "EFR32MG13P732F512GM48";
         static public string Device { get => _device; set => _device = value; }
 
+        static string _ip = null;
+        public static string IP { get => _ip; set => _ip = value; }
+
+        static string _workingDir = null;
+        static public string WorkingDir { get => _workingDir; set => _workingDir = value; }
+
         static string commanderRunner(string arguments)
         {
             Process p = new Process();
@@ -48,6 +54,12 @@ namespace CommanderLib
                 RedirectStandardOutput = true,
                 Arguments = arguments
             };
+
+            if (!string.IsNullOrEmpty(WorkingDir))
+                p.StartInfo.WorkingDirectory = WorkingDir;
+
+            _logger.Debug(arguments);
+
             p.Start();
 
             string output = p.StandardOutput.ReadToEnd();
@@ -55,16 +67,65 @@ namespace CommanderLib
 
             if (p.ExitCode != 0)
             {
-                throw new Exception($"{output}\r\n{arguments}");
+                throw new Exception($"Exit code = {p.ExitCode}\r\n{output}\r\n{arguments}");
             }
+
+            _logger.Debug(output);
 
             return output;
 
         }
 
-        public static void Flash(IEnumerable<string> files, string mfgstring, bool massErase = false)
+        public static string Flash(IEnumerable<string> files, string mfgstring = null, bool massErase = false)
         {
+            // commander flash bootloader-storage-internal-single-512k-combined.s37 Highfin.gbl --masserase --tokengroup znet --token "TOKEN_MFG_STRING:\"4200-C\"" --device EFR32MG13P732F512GM48
+            string args = "flash";
 
+            if (!string.IsNullOrEmpty(IP))
+                args += $" --ip {IP}";
+
+            foreach (string file in files)
+                args += $" {file}";
+
+            if (massErase)
+                args += $" --masserase";
+
+            if (!string.IsNullOrEmpty(mfgstring))
+                args += $" --tokengroup znet --token \"TOKEN_MFG_STRING:\\\"{mfgstring}\\\"\"";
+
+            if (!string.IsNullOrEmpty(Device))
+                args += $" --device {Device}";
+
+            string poutput = commanderRunner(args);
+            return poutput;
+
+        }
+
+        public static string TokenDump(string token, string group)
+        {
+            string args = "tokendump";
+
+            if (!string.IsNullOrEmpty(IP))
+                args += $" --ip {IP}";
+
+            if (!string.IsNullOrEmpty(group))
+                args += $" --tokengroup {group}";
+
+            if (!string.IsNullOrEmpty(token))
+                args += $" --token \"{token}\"";
+
+            if (!string.IsNullOrEmpty(Device))
+                args += $" --device {Device}";
+
+            string poutput = commanderRunner(args);
+            return poutput;
+        }
+
+        public static string SetDgbMode(string mode="OUT")
+        {
+            string args = $"adapter dbgmode {mode}";
+            string poutput = commanderRunner(args);
+            return poutput;
         }
 
         public static string GetEUIStr()
@@ -74,14 +135,16 @@ namespace CommanderLib
 
         public static long GetEUI()
         {
-            string args = $"tokendump --tokengroup znet --token \"MFG_EMBER_EUI_64\" --device {_device}";
-            string poutput = commanderRunner(args);
+            //string args = $"tokendump --tokengroup znet --token \"MFG_EMBER_EUI_64\" --device {Device}";
+            string poutput = TokenDump("MFG_EMBER_EUI_64", "znet");
 
             Regex regx = new Regex("MFG_EMBER_EUI_64: ([0-9,A-F]{16})"); // i.e = 0784A7FEFF570B00
             Match m = regx.Match(poutput);
 
             if (!m.Success || m.Groups.Count < 2)
-                return -1;
+            {
+                throw new Exception($"Unable to find EUI in:\r\n{poutput}");
+            }
 
             // Convert to little endian
             long bigeui = Convert.ToInt64(m.Groups[1].Value, 16);

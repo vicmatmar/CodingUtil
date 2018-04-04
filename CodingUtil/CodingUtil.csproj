@@ -64,6 +64,11 @@
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -76,6 +81,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\home-automation-tester\HomeAutomationTester\manufacturing_common\Centralite.Database\Centralite.Database.csproj">
@@ -89,6 +98,10 @@
     <ProjectReference Include="..\databaseLib\DatabaseLib.csproj">
       <Project>{83ad53b1-7d5a-4448-a061-9956ec677b4a}</Project>
       <Name>DatabaseLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RangetesterLib\RangetesterLib.csproj">
+      <Project>{77caed86-36d7-4b8c-a4ea-105668620c93}</Project>
+      <Name>RangetesterLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\StationSetupLib\StationSetupLib.csproj">
       <Project>{5c0f6e4e-ff68-44bf-8628-02b188e1bc8b}</Project>
