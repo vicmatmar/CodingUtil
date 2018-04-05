@@ -14,6 +14,8 @@ namespace RangeTester
 {
     public class TelnetConnection : IDisposable
     {
+        static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         TcpClient _tcpSocket;
         int _timeOutMs = 200;
 

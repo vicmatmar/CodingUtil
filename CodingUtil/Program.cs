@@ -21,7 +21,7 @@ namespace CodingUtil
             Commander.SetDgbMode("OUT");
             Commander.Flash(opts.InputFiles, opts.MFGString, opts.MassErase);
 
-            _logger.Info("Range Test");
+            _logger.Info("Range Test Start");
             IRangeTester rangeTester = new EFR32xRT();
             rangeTester.Server_Host = opts.Server_Host;
             rangeTester.Server_Port = opts.Server_Port;
@@ -33,22 +33,20 @@ namespace CodingUtil
             Thread.Sleep(500);
             RtPingResults ping = rangeTester.Ping(Properties.Settings.Default.PingCount);
 
-            string msg = $"\r\n";
+            string msg = "";
             msg += $"TxLqi:{ping.TxLqi} ({Properties.Settings.Default.TxLqi})\r\n";
             msg += $"TxSsi:{ping.TxRssi} ({Properties.Settings.Default.TxRssi})\r\n";
             msg += $"RxLqi:{ping.RxLqi} ({Properties.Settings.Default.RxLqi})\r\n";
             msg += $"RxRssi:{ping.RxRssi} ({Properties.Settings.Default.RxRssi})";
 
-            _logger.Info(msg);
-
             if (ping.TxLqi >= Properties.Settings.Default.TxLqi && ping.TxRssi >= Properties.Settings.Default.TxRssi &&
                 ping.RxLqi >= Properties.Settings.Default.RxLqi && ping.RxRssi >= Properties.Settings.Default.RxRssi)
             {
-                _logger.Info("Range Test Passed");
+                _logger.Info($"Range Test Passed:\r\n{msg}");
             }
             else
             {
-                _logger.Info("Range Test Failed");
+                _logger.Error($"Range Test Failed:\r\n{msg}");
                 return -1;
             }
 
@@ -84,9 +82,14 @@ namespace CodingUtil
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message + "\r\n" + ex.StackTrace);
+                _logger.Error(ex, "Exception during coding sequence:");
                 return -1;
             }
+
+            if (rc == 0)
+                _logger.Info("Coding sequence completed without error");
+            else
+                _logger.Error($"Coding sequence FAILED with error code {rc}");
 
             return rc;
         }

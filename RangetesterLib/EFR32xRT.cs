@@ -116,7 +116,7 @@ namespace RangeTester
                     else
                     {
                         retry++;
-                        if(retry > 3)
+                        if(retry > 5)
                             throw new Exception("Invalid Ping Response: " + response);
                     }
 
