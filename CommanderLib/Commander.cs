@@ -18,7 +18,7 @@ namespace CommanderLib
 
         static string[] _possible_paths = new string[]
         {
-            @"C:\ Simplicity Commander",
+            @"C:\Simplicity Commander",
             @"C:\SiliconLabs\SimplicityStudio\v4\developer\adapter_packs\commander"
         };
 
@@ -121,9 +121,13 @@ namespace CommanderLib
             return poutput;
         }
 
-        public static string SetDgbMode(string mode="OUT")
+        public static string SetDgbMode(string mode = "OUT")
         {
             string args = $"adapter dbgmode {mode}";
+
+            if (!string.IsNullOrEmpty(IP))
+                args += $" --ip {IP}";
+
             string poutput = commanderRunner(args);
             return poutput;
         }
@@ -172,6 +176,33 @@ namespace CommanderLib
         /// <returns>utility full path</returns>
         public static string FindEXEPath()
         {
+            try
+            {
+                Process p = new Process();
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.FileName = "where";
+                p.StartInfo.Arguments = _exe_name;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.Start();
+                string output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+
+                if (p.ExitCode == 0)
+                {
+                    string path = output.Substring(0, output.IndexOf(Environment.NewLine));
+                    if (File.Exists(path))
+                    {
+                        _logger.Debug($"Commander found at: {path}");
+                        return path;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "'where' command is not on path");
+            }
+
             string exe_path = _exe_path;
             if (!string.IsNullOrEmpty(exe_path))
                 if (File.Exists(exe_path))
