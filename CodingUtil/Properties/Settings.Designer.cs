@@ -82,5 +82,17 @@ namespace CodingUtil.Properties {
                 this["PingCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OfferRangeTestRetry {
+            get {
+                return ((bool)(this["OfferRangeTestRetry"]));
+            }
+            set {
+                this["OfferRangeTestRetry"] = value;
+            }
+        }
     }
 }
