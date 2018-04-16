@@ -51,8 +51,11 @@ namespace CommanderLib
             {
                 FileName = Exe_path,
                 UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardInput = true,
                 RedirectStandardOutput = true,
-                Arguments = arguments
+                RedirectStandardError = true,
+                Arguments = arguments,
             };
 
             if (!string.IsNullOrEmpty(WorkingDir))
@@ -76,7 +79,7 @@ namespace CommanderLib
 
         }
 
-        public static string Flash(IEnumerable<string> files, string mfgstring = null, bool massErase = false)
+        public static string Flash(string[] files, string mfgstring = null, bool massErase = false)
         {
             // commander flash bootloader-storage-internal-single-512k-combined.s37 Highfin.gbl --masserase --tokengroup znet --token "TOKEN_MFG_STRING:\"4200-C\"" --device EFR32MG13P732F512GM48
             string args = "flash";
@@ -179,10 +182,17 @@ namespace CommanderLib
             try
             {
                 Process p = new Process();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.FileName = "where";
-                p.StartInfo.Arguments = _exe_name;
-                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo = new ProcessStartInfo()
+                {
+                    FileName = "where",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments = _exe_name
+                };
+
                 p.Start();
                 string output = p.StandardOutput.ReadToEnd();
                 p.WaitForExit();

@@ -34,5 +34,160 @@ namespace WCodingUtil.Properties {
                 this["Working_Dir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection Files {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["Files"]));
+            }
+            set {
+                this["Files"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MFgString {
+            get {
+                return ((string)(this["MFgString"]));
+            }
+            set {
+                this["MFgString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DBA_ip {
+            get {
+                return ((string)(this["DBA_ip"]));
+            }
+            set {
+                this["DBA_ip"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RTM_ip {
+            get {
+                return ((string)(this["RTM_ip"]));
+            }
+            set {
+                this["RTM_ip"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10001")]
+        public int RTM_port {
+            get {
+                return ((int)(this["RTM_port"]));
+            }
+            set {
+                this["RTM_port"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4901")]
+        public int RTC_port {
+            get {
+                return ((int)(this["RTC_port"]));
+            }
+            set {
+                this["RTC_port"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("17")]
+        public int Channel {
+            get {
+                return ((int)(this["Channel"]));
+            }
+            set {
+                this["Channel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int PingCount {
+            get {
+                return ((int)(this["PingCount"]));
+            }
+            set {
+                this["PingCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("240")]
+        public float TxLqi {
+            get {
+                return ((float)(this["TxLqi"]));
+            }
+            set {
+                this["TxLqi"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-68")]
+        public float TxRssi {
+            get {
+                return ((float)(this["TxRssi"]));
+            }
+            set {
+                this["TxRssi"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("240")]
+        public float RxLqi {
+            get {
+                return ((float)(this["RxLqi"]));
+            }
+            set {
+                this["RxLqi"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-74")]
+        public float RxRssi {
+            get {
+                return ((float)(this["RxRssi"]));
+            }
+            set {
+                this["RxRssi"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OfferRangeTestRetry {
+            get {
+                return ((bool)(this["OfferRangeTestRetry"]));
+            }
+            set {
+                this["OfferRangeTestRetry"] = value;
+            }
+        }
     }
 }

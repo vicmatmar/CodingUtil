@@ -5,5 +5,44 @@
     <Setting Name="Working_Dir" Type="System.String" Scope="User">
       <Value Profile="(Default)">\\rs01\Data_Shares\Firmware</Value>
     </Setting>
+    <Setting Name="Files" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MFgString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DBA_ip" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RTM_ip" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RTM_port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10001</Value>
+    </Setting>
+    <Setting Name="RTC_port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4901</Value>
+    </Setting>
+    <Setting Name="Channel" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">17</Value>
+    </Setting>
+    <Setting Name="PingCount" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="TxLqi" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">240</Value>
+    </Setting>
+    <Setting Name="TxRssi" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">-68</Value>
+    </Setting>
+    <Setting Name="RxLqi" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">240</Value>
+    </Setting>
+    <Setting Name="RxRssi" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">-74</Value>
+    </Setting>
+    <Setting Name="OfferRangeTestRetry" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

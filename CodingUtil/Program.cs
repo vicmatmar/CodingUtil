@@ -21,7 +21,7 @@ namespace CodingUtil
             Commander.WorkingDir = opts.WorkingDir;
             Commander.IP = opts.Client_Host;
             Commander.SetDgbMode("OUT");
-            Commander.Flash(opts.InputFiles, opts.MFGString, opts.MassErase);
+            Commander.Flash(opts.InputFiles.ToArray(), opts.MFGString, opts.MassErase);
 
             while (true)
             {
