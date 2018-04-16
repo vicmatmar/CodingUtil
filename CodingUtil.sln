@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLib", "databaseLib\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangetesterLib", "RangetesterLib\RangetesterLib.csproj", "{77CAED86-36D7-4B8C-A4EA-105668620C93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCodingUtil", "WCodingUtil\WCodingUtil.csproj", "{9643D386-FCC6-42E7-9388-08D25A03D906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,12 @@ Global
 		{77CAED86-36D7-4B8C-A4EA-105668620C93}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77CAED86-36D7-4B8C-A4EA-105668620C93}.Schnieder|Any CPU.ActiveCfg = Release|Any CPU
 		{77CAED86-36D7-4B8C-A4EA-105668620C93}.Schnieder|Any CPU.Build.0 = Release|Any CPU
+		{9643D386-FCC6-42E7-9388-08D25A03D906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9643D386-FCC6-42E7-9388-08D25A03D906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9643D386-FCC6-42E7-9388-08D25A03D906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9643D386-FCC6-42E7-9388-08D25A03D906}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9643D386-FCC6-42E7-9388-08D25A03D906}.Schnieder|Any CPU.ActiveCfg = Release|Any CPU
+		{9643D386-FCC6-42E7-9388-08D25A03D906}.Schnieder|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

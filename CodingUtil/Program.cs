@@ -25,7 +25,7 @@ namespace CodingUtil
 
             while (true)
             {
-                _logger.Info("Range Test Start");
+                _logger.Info("\r\nRange Test Start");
                 IRangeTester rangeTester = new EFR32xRT();
                 rangeTester.Server_Host = opts.Server_Host;
                 rangeTester.Server_Port = opts.Server_Port;
@@ -57,6 +57,7 @@ namespace CodingUtil
                     {
                         Console.Write("(R)etry or (A)bort?");
                         ConsoleKeyInfo ki = Console.ReadKey();
+
 
                         if (ki.Key == ConsoleKey.A)
                             return -1;
