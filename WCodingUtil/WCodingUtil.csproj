@@ -92,7 +92,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommanderLib\CommanderLib.csproj">
@@ -105,4 +107,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)$(OutDir)*" "C:\CodingUtil" /S/Y/I/D
+xcopy "$(ProjectDir)$(OutDir)*" "\\rs01\Data_Shares\Applications\CodingUtil" /S/Y/I/D</PostBuildEvent>
+  </PropertyGroup>
 </Project>

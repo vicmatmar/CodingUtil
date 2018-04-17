@@ -1,11 +1,4 @@
-﻿// minimalistic telnet implementation
-// conceived by Tom Janssens on 2007/06/06  for codeproject
-//
-// http://www.corebvba.be
-
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
@@ -61,6 +54,8 @@ namespace RangeTester
 
         public void Write(string cmd)
         {
+            _logger.Trace($"Write:{cmd}");
+
             if (!_tcpSocket.Connected) return;
             //byte[] buf = ASCIIEncoding.ASCII.GetBytes(cmd.Replace("\0xFF", "\0xFF\0xFF"));
             byte[] buf = ASCIIEncoding.ASCII.GetBytes(cmd);
@@ -76,6 +71,9 @@ namespace RangeTester
                 data += read();
                 System.Threading.Thread.Sleep(_timeOutMs);
             } while (_tcpSocket.Available > 0);
+
+            _logger.Trace($"Read:{data}");
+
             return data;
         }
 

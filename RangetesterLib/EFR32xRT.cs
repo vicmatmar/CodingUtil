@@ -48,22 +48,37 @@ namespace RangeTester
 
             // Start 
             string lines;
-            client.WriteLine("custom stop_network_scan");
-            lines = client.Read();
+            int try_count = 0;
+            while (true)
+            {
+                client.WriteLine("custom stop_network_scan");
+                // Sleep while still scanning
+                for (int i = 0; i < 10; i++)
+                {
+                    Thread.Sleep(500);
+                    lines = client.Read();
+                    if (!lines.Contains("SCANNING"))
+                        break;
+                }
 
-            //clientWriter.WriteLine("plugin mfglib mfgenable 1");
-            client.WriteLine("plugin mfglib stop");
-            lines = client.Read();
+                //clientWriter.WriteLine("plugin mfglib mfgenable 1");
+                client.WriteLine("plugin mfglib stop");
+                lines = client.Read();
 
-            var clientFilter = (UInt32)((new Random((int)DateTime.Now.Ticks).NextDouble()) * UInt32.MaxValue);
-            client.WriteLine($"custom rt-init {clientFilter} {Alt_Cfg}");  // Alt_Cfg does nothing for Highfin
-            lines = client.Read();
-            int count = 0;
-            foreach (string line in lines.Split(new string[] { "\r\n" }, StringSplitOptions.None))
-                if (line == "STATUS 00")
-                    count++;
-            if (count != 2)
-                throw new Exception("Unable to init range test client");
+                var clientFilter = (UInt32)((new Random((int)DateTime.Now.Ticks).NextDouble()) * UInt32.MaxValue);
+                client.WriteLine($"custom rt-init {clientFilter} {Alt_Cfg}");  // Alt_Cfg does nothing for Highfin
+                lines = client.Read();
+                int count = 0;
+                foreach (string line in lines.Split(new string[] { "\r\n" }, StringSplitOptions.None))
+                    if (line == "STATUS 00")
+                        count++;
+
+                if (count == 2)
+                    break;
+
+                if(try_count++ > 3)
+                    throw new Exception("Unable to init range test client");
+            }
 
 
             client.WriteLine($"plugin mfglib set-channel {Channel}");
