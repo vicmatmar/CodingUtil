@@ -103,6 +103,9 @@ namespace WCodingUtil
         {
             InitializeComponent();
 
+            Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+            Text += $" {version.ToString()}";
+
             Icon = Properties.Resources.Oxygen_Icons_org_Oxygen_Apps_preferences_web_browser_cache;
         }
 
