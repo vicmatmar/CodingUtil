@@ -49,27 +49,40 @@ namespace WCodingUtil
 
                 rangeTester.Server_Init();
                 Thread.Sleep(500);
-                RtPingResults ping = rangeTester.Ping(Properties.Settings.Default.PingCount);
 
-                string msg = "";
-                msg += $"TxLqi:{ping.TxLqi} ({Properties.Settings.Default.TxLqi})\r\n";
-                msg += $"TxRssi:{ping.TxRssi} ({Properties.Settings.Default.TxRssi})\r\n";
-                msg += $"RxLqi:{ping.RxLqi} ({Properties.Settings.Default.RxLqi})\r\n";
-                msg += $"RxRssi:{ping.RxRssi} ({Properties.Settings.Default.RxRssi})";
-
-                if (ping.TxLqi >= Properties.Settings.Default.TxLqi && ping.TxRssi >= Properties.Settings.Default.TxRssi &&
-                    ping.RxLqi >= Properties.Settings.Default.RxLqi && ping.RxRssi >= Properties.Settings.Default.RxRssi)
+                try
                 {
-                    setOutputStatus($"Range Test Passed:\r\n{msg}");
-                    break;
+                    RtPingResults ping = rangeTester.Ping(Properties.Settings.Default.PingCount);
+
+                    string msg = "";
+                    msg += $"TxLqi:{ping.TxLqi} ({Properties.Settings.Default.TxLqi})\r\n";
+                    msg += $"TxRssi:{ping.TxRssi} ({Properties.Settings.Default.TxRssi})\r\n";
+                    msg += $"RxLqi:{ping.RxLqi} ({Properties.Settings.Default.RxLqi})\r\n";
+                    msg += $"RxRssi:{ping.RxRssi} ({Properties.Settings.Default.RxRssi})";
+
+                    if (ping.TxLqi >= Properties.Settings.Default.TxLqi && ping.TxRssi >= Properties.Settings.Default.TxRssi &&
+                        ping.RxLqi >= Properties.Settings.Default.RxLqi && ping.RxRssi >= Properties.Settings.Default.RxRssi)
+                    {
+                        setOutputStatus($"Range Test Passed:\r\n{msg}");
+                        break;
+                    }
+                    else
+                    {
+                        setOutputStatus($"Range Test Failed:\r\n{msg}");
+                        if (MessageBoxEx.Show(msg, "Range Test Failed", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
+                        {
+                            return -1;
+                        }
+                    }
                 }
-                else
+                catch(Exception ex)
                 {
-                    setOutputStatus($"Range Test Failed:\r\n{msg}");
-                    if (MessageBox.Show(this, msg, "Range Test Failed", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
+                    setOutputStatus($"Range Test Failed:\r\n{ex.Message}\r\n{ex.StackTrace}");
+                    if (MessageBoxEx.Show(ex.Message, "Range Test Failed", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     {
                         return -1;
                     }
+
                 }
             }
 
@@ -96,8 +109,15 @@ namespace WCodingUtil
         private void WCodingUtilForm_Load(object sender, EventArgs e)
         {
 
-            Files_listBox.Items.Clear();
+            loadPropertySettings();
+            setRunStatus("Ready", Color.Black, Color.White);
+            run_button.Select();
 
+        }
+
+        void loadPropertySettings()
+        {
+            Files_listBox.Items.Clear();
             if (Properties.Settings.Default.Files == null)
                 Properties.Settings.Default.Files = new System.Collections.Specialized.StringCollection();
             string[] files = new string[Properties.Settings.Default.Files.Count];
@@ -109,12 +129,6 @@ namespace WCodingUtil
             dbaip_textBox.Text = Properties.Settings.Default.DBA_ip;
             rtmip_textBox.Text = Properties.Settings.Default.RTM_ip;
             channel_numericUpDown.Value = Properties.Settings.Default.Channel;
-
-            setRunStatus("Ready", Color.Black, Color.White);
-
-
-            run_button.Select();
-
         }
         #endregion
 
@@ -252,13 +266,49 @@ namespace WCodingUtil
         #endregion
 
         #region Settings
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.AddExtension = true;
+            dlg.Filter = "*.xml|*.xml|All Files *.*|*.*";
+            //dlg.Filter = "(*.xml)|.xml";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                restoreSettingstoFile(dlg.FileName);
+            }
+        }
+
         void restoreSettingstoFile(string fileloc)
         {
             XDocument xdoc = XDocument.Load(fileloc);
+            XElement settings = xdoc.Element("CodeSettings");
 
-            IEnumerable<XElement> settings = xdoc.Root.Elements("CodeSetting");
+            if (!settings.HasElements)
+                return;
+
+            var properties = Properties.Settings.Default;
 
             var files = settings.Elements("Files");
+            if(files.Any())
+            {
+                Properties.Settings.Default.Files = new System.Collections.Specialized.StringCollection();
+                foreach (var file in files.Elements("File"))
+                    properties.Files.Add(file.Value);
+            }
+
+            var s = settings.Element("MFGStr");
+            if (s != null) properties.MFgString = s.Value;
+            s = settings.Element("Device");
+            if (s != null) properties.Device = s.Value;
+            s = settings.Element("DBAip");
+            if (s != null) properties.DBA_ip = s.Value;
+            s = settings.Element("RTMip");
+            if (s != null) properties.RTM_ip = s.Value;
+            s = settings.Element("Channel");
+            if (s != null) properties.Channel = Convert.ToInt32(s.Value);
+
+            properties.Save();
+            loadPropertySettings();
 
         }
 
@@ -266,17 +316,19 @@ namespace WCodingUtil
         {
             XDocument xdoc = new XDocument(new XElement("CodeSettings"));
 
+            var properties = Properties.Settings.Default;
+
             var files = new XElement("Files");
-            foreach (string file in Properties.Settings.Default.Files)
+            foreach (string file in properties.Files)
                 files.Add(new XElement("File", file));
 
             xdoc.Root.Add(files);
 
-            xdoc.Root.Add(new XElement("MFGStr", Properties.Settings.Default.MFgString));
-            xdoc.Root.Add(new XElement("Device", Properties.Settings.Default.Device));
-            xdoc.Root.Add(new XElement("DBAip", Properties.Settings.Default.DBA_ip));
-            xdoc.Root.Add(new XElement("RTMip", Properties.Settings.Default.RTM_ip));
-            xdoc.Root.Add(new XElement("Channel", Properties.Settings.Default.Channel));
+            xdoc.Root.Add(new XElement("MFGStr", properties.MFgString));
+            xdoc.Root.Add(new XElement("Device", properties.Device));
+            xdoc.Root.Add(new XElement("DBAip", properties.DBA_ip));
+            xdoc.Root.Add(new XElement("RTMip", properties.RTM_ip));
+            xdoc.Root.Add(new XElement("Channel", properties.Channel));
 
             xdoc.Save(fileloc);
         }

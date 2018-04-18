@@ -132,7 +132,7 @@ namespace RangeTester
                     {
                         retry++;
                         if(retry > 5)
-                            throw new Exception("Invalid Ping Response: " + response);
+                            throw new Exception($"Invalid Ping Response({i}/{ping_count}): {response}");
                     }
 
                 }
