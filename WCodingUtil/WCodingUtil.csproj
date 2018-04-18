@@ -31,11 +31,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.3\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -53,16 +64,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WCodingUtil.cs">
+    <Compile Include="WCodingUtilForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WCodingUtil.Designer.cs">
-      <DependentUpon>WCodingUtil.cs</DependentUpon>
+    <Compile Include="WCodingUtilForm.Designer.cs">
+      <DependentUpon>WCodingUtilForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="WCodingUtil.resx">
-      <DependentUpon>WCodingUtil.cs</DependentUpon>
+    <EmbeddedResource Include="WCodingUtilForm.resx">
+      <DependentUpon>WCodingUtilForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -72,6 +84,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="NLog.config">
       <SubType>Designer</SubType>
@@ -101,14 +114,21 @@
       <Project>{4ddfa33e-7024-46a3-9542-5a0afa1cf03d}</Project>
       <Name>CommanderLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\databaseLib\DatabaseLib.csproj">
+      <Project>{83ad53b1-7d5a-4448-a061-9956ec677b4a}</Project>
+      <Name>DatabaseLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RangetesterLib\RangetesterLib.csproj">
       <Project>{77caed86-36d7-4b8c-a4ea-105668620c93}</Project>
       <Name>RangetesterLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Oxygen-Icons.org-Oxygen-Apps-preferences-web-browser-cache.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)$(OutDir)*" "C:\CodingUtil" /S/Y/I/D
-xcopy "$(ProjectDir)$(OutDir)*" "\\rs01\Data_Shares\Applications\CodingUtil" /S/Y/I/D</PostBuildEvent>
+::xcopy "$(ProjectDir)$(OutDir)*" "\\rs01\Data_Shares\Applications\CodingUtil" /S/Y/I/D</PostBuildEvent>
   </PropertyGroup>
 </Project>

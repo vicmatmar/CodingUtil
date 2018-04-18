@@ -1,6 +1,6 @@
 ﻿namespace WCodingUtil
 {
-    partial class WCodingUtil
+    partial class WCodingUtilForm
     {
         /// <summary>
         /// Required designer variable.
@@ -48,9 +48,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.channel_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.settings_groupBox = new System.Windows.Forms.GroupBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddFiles_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.channel_numericUpDown)).BeginInit();
             this.settings_groupBox.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -272,21 +276,50 @@
             this.settings_groupBox.TabIndex = 0;
             this.settings_groupBox.TabStop = false;
             // 
-            // WCodingUtil
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(974, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // WCodingUtilForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(974, 494);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.settings_groupBox);
             this.Controls.Add(this.output_textBox);
             this.Controls.Add(this.runStatus_textBox);
-            this.Name = "WCodingUtil";
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "WCodingUtilForm";
             this.Text = "WCodeUtil";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.WCodingUtilForm_Load);
             this.AddFiles_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.channel_numericUpDown)).EndInit();
             this.settings_groupBox.ResumeLayout(false);
             this.settings_groupBox.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -313,6 +346,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown channel_numericUpDown;
         private System.Windows.Forms.GroupBox settings_groupBox;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
     }
 }
 

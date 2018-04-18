@@ -16,7 +16,7 @@ namespace WCodingUtil
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WCodingUtil());
+            Application.Run(new WCodingUtilForm());
         }
     }
 }
