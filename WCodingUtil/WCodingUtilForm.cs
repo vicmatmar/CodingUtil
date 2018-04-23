@@ -117,22 +117,6 @@ namespace WCodingUtil
             run_button.Select();
 
         }
-
-        void loadPropertySettings()
-        {
-            Files_listBox.Items.Clear();
-            if (Properties.Settings.Default.Files == null)
-                Properties.Settings.Default.Files = new System.Collections.Specialized.StringCollection();
-            string[] files = new string[Properties.Settings.Default.Files.Count];
-            Properties.Settings.Default.Files.CopyTo(files, 0);
-            Files_listBox.Items.AddRange(files);
-
-            device_comboBox.Text = Properties.Settings.Default.Device;
-            mfgStr_textBox.Text = Properties.Settings.Default.MFgString;
-            dbaip_textBox.Text = Properties.Settings.Default.DBA_ip;
-            rtmip_textBox.Text = Properties.Settings.Default.RTM_ip;
-            channel_numericUpDown.Value = Properties.Settings.Default.Channel;
-        }
         #endregion
 
         #region GUI helpers
@@ -269,16 +253,20 @@ namespace WCodingUtil
         #endregion
 
         #region Settings
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        void loadPropertySettings()
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.AddExtension = true;
-            dlg.Filter = "*.xml|*.xml|All Files *.*|*.*";
-            //dlg.Filter = "(*.xml)|.xml";
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                restoreSettingstoFile(dlg.FileName);
-            }
+            Files_listBox.Items.Clear();
+            if (Properties.Settings.Default.Files == null)
+                Properties.Settings.Default.Files = new System.Collections.Specialized.StringCollection();
+            string[] files = new string[Properties.Settings.Default.Files.Count];
+            Properties.Settings.Default.Files.CopyTo(files, 0);
+            Files_listBox.Items.AddRange(files);
+
+            device_comboBox.Text = Properties.Settings.Default.Device;
+            mfgStr_textBox.Text = Properties.Settings.Default.MFgString;
+            dbaip_textBox.Text = Properties.Settings.Default.DBA_ip;
+            rtmip_textBox.Text = Properties.Settings.Default.RTM_ip;
+            channel_numericUpDown.Value = Properties.Settings.Default.Channel;
         }
 
         void restoreSettingstoFile(string fileloc)
@@ -334,6 +322,18 @@ namespace WCodingUtil
             xdoc.Root.Add(new XElement("Channel", properties.Channel));
 
             xdoc.Save(fileloc);
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.AddExtension = true;
+            dlg.Filter = "*.xml|*.xml|All Files *.*|*.*";
+            //dlg.Filter = "(*.xml)|.xml";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                restoreSettingstoFile(dlg.FileName);
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
