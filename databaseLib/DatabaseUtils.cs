@@ -15,6 +15,39 @@ namespace CodingUtil
     {
         static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// A total hack to get devices added in barscan
+        /// 
+        /// We need to properlly add info about the test in db
+        /// But I don't even know how to query for firmware version info
+        /// 
+        /// </summary>
+        /// <param name="euiId"></param>
+        /// <returns></returns>
+        public static int AddTargetDevice(int euiId)
+        {
+            using (ManufacturingStoreEntities cx = new ManufacturingStoreEntities())
+            {
+                if (!cx.TargetDevices.Where(td => td.EuiId == euiId).Any())
+                {
+                    TargetDevice td = new TargetDevice();
+                    td.EuiId = euiId;
+                    td.IsaId = 1;
+                    td.ResultId = 2;
+                    td.TestSessionId = 4726869;
+                    cx.TargetDevices.Add(td);
+                    cx.SaveChanges();
+                }
+
+                return cx.TargetDevices.Where(td => td.EuiId == euiId).Single().Id;
+            }
+        }
+
+        /// <summary>
+        /// Inserts the EUI if not in table
+        /// </summary>
+        /// <param name="eui">EUI</param>
+        /// <returns>ID</returns>
         public static int InsertEUI(long eui)
         {
             try
@@ -32,8 +65,8 @@ namespace CodingUtil
 
                     // Form query for the eui
                     var q = cx.EuiLists.Where(e => e.EUI == euistr);
-                    
-                    if(q.Any())
+
+                    if (q.Any())
                     {
                         return q.Single().Id;
 
@@ -62,6 +95,8 @@ namespace CodingUtil
 
                     cx.EuiLists.Add(euiList);
                     cx.SaveChanges();
+
+
 
                     return q.Single().Id;
 

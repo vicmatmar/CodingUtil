@@ -94,6 +94,9 @@ namespace WCodingUtil
             int euiid = DatabaseUtils.InsertEUI(eui);
             setRunStatus($"EUI id = {euiid}");
 
+            // Dummy insert needed for barscan
+            int tdid = DatabaseUtils.AddTargetDevice(euiid);
+
             return 0;
         }
         #endregion

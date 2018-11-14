@@ -74,6 +74,9 @@ namespace CodingUtil
             int euiid = DatabaseUtils.InsertEUI(eui);
             _logger.Info($"EUI id = {euiid}");
 
+            // Dummy insert needed for barscan
+            int tdid = DatabaseUtils.AddTargetDevice(euiid);
+
             return 0;
         }
 
