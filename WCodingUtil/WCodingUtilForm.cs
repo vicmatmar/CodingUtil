@@ -216,7 +216,7 @@ namespace WCodingUtil
             // OnlyOnFaulted
             task.ContinueWith(a =>
            {
-               _logger.Debug(a.Exception, "Error coding");
+               _logger.Error(a.Exception, "Error coding");
 
                setOutputStatus(a.Exception.InnerException.Message + "\r\n" + a.Exception.InnerException.StackTrace);
                setRunStatus("FAIL", Color.White, Color.Red);
